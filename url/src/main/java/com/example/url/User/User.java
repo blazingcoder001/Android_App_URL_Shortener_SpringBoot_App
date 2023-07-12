@@ -8,17 +8,9 @@ import jakarta.persistence.Id;
 @Entity
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int ind;
-    String Username,Password,firstname,lastname,Url_Full;
+    String Username;
+    String Password,firstname,lastname,Url_Full;
 
-    public int getInd() {
-        return ind;
-    }
-
-    public void setInd(int ind) {
-        this.ind = ind;
-    }
 
     public String getUsername() {
         return Username;
