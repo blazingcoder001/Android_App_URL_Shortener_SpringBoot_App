@@ -1,7 +1,7 @@
 package com.example.url.User;
 
 public class LoginCheck {
-    String username,password;
+    private String username,password;
 
     public String getUsername() {
         return username;

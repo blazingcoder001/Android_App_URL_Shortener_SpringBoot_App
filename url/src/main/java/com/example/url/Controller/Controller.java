@@ -1,5 +1,6 @@
 package com.example.url.Controller;
 
+import com.example.url.User.LoginCheck;
 import com.example.url.User.User;
 import com.example.url.User.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,16 +40,17 @@ public class Controller {
 
 }
 @PostMapping("/user/login-check")
-    public Integer check_login( @RequestBody String username,@RequestBody String password){
+    public Integer check_login(@RequestBody LoginCheck loginCheck){
     Optional<User> user;
-    k=userDao.exists(username);
+    k=userDao.exists(loginCheck.getUsername());
     if(k==true){
-        user=userDao.find(username);
-        if(user.orElse(null).getPassword()!=password){
-            return 1;
+        user=userDao.find(loginCheck.getUsername());
+//        System.out.println("***user.orElse(null).getPassword());
+        if(user.orElse(null).getPassword().equals(loginCheck.getPassword())){
+            return 3;
         }
         else{
-            return 3;
+            return 1;
         }
     }
     else{
