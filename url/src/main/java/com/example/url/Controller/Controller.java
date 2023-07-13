@@ -1,5 +1,6 @@
 package com.example.url.Controller;
 
+import com.example.url.User.ChangePassData;
 import com.example.url.User.LoginCheck;
 import com.example.url.User.User;
 import com.example.url.User.UserDAO;
@@ -65,15 +66,20 @@ public class Controller {
     return k;
 }
 @PostMapping("/user/change-password")
-    public Boolean change_password(@RequestBody String username, @RequestBody String oldpas, @RequestBody String newpas){
-    user=userDao.find(username);
-    user1=user.orElseThrow(()->new NoSuchElementException("User not Found!"));
-    user2=user1;
-    user1.setPassword(newpas);
-    userDao.save(user1);
-    user=userDao.find(username);
-    user1=user.orElseThrow(()->new NoSuchElementException("User not Found!"));
-    return !user1.getPassword().equals(user2.getPassword());
+    public Integer change_password(@RequestBody ChangePassData changePassData){
+    user=userDao.find(changePassData.getUsername());
+//    user1=user.orElseThrow(()->new NoSuchElementException("User not Found!"));
+//    user2=user1;
+    if(user.orElse(null).getPassword().equals(changePassData.getOld_password())){
+        user.orElse(null).setPassword(changePassData.getNew_password());
+        userDao.delete_by_ID(changePassData.getUsername());
+        userDao.save(user.orElse(null));
+        return 1;
+    }
+    else{
+        return 2;
+    }
+
 }
 @PostMapping("/user/getoneuser")
     public User getoneuser(@RequestBody String username){
