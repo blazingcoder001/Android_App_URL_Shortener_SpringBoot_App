@@ -12,7 +12,7 @@ public class UserDAO {
     @Autowired
     private UserRepository repository;
     public void save(User user){
-        repository.save(user);
+    repository.save(user);
     }
     public void delete(User user){
         repository.delete(user);
@@ -29,5 +29,6 @@ public class UserDAO {
         user=repository.findById(username);
         return user;
     }
+
 
 }
