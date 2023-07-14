@@ -1,9 +1,6 @@
 package com.example.url.Controller;
 
-import com.example.url.User.ChangePassData;
-import com.example.url.User.LoginCheck;
-import com.example.url.User.User;
-import com.example.url.User.UserDAO;
+import com.example.url.User.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -59,10 +56,17 @@ public class Controller {
     }
 
 }
+//@PostMapping("/user/delete-user")
+//    public Boolean delete(@RequestBody String username){
+//    System.out.println(username+"//**/*/");
+//    userDao.delete_by_ID(username);
+//    k=userDao.exists(username);
+//    return k;
+//}
 @PostMapping("/user/delete-user")
-    public Boolean delete(@RequestBody String username){
-    userDao.delete_by_ID(username);
-    k=userDao.exists(username);
+public Boolean delete(@RequestBody DeleteData deleteData){
+    userDao.delete_by_ID(deleteData.getUsername());
+    k=userDao.exists(deleteData.getUsername());
     return k;
 }
 @PostMapping("/user/change-password")

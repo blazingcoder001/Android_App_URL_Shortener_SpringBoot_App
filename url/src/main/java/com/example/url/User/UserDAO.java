@@ -14,9 +14,7 @@ public class UserDAO {
     public void save(User user){
     repository.save(user);
     }
-    public void delete(User user){
-        repository.delete(user);
-    }
+
     public void delete_by_ID(String username){
         repository.deleteById(username);
 
