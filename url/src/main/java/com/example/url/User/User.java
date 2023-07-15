@@ -9,8 +9,15 @@ import jakarta.persistence.Id;
 public class User {
     @Id
     String username;
-    String password,firstname,lastname,url_Full;
+    String password,firstname,lastname,url_Full,url_shorten;
 
+    public String getUrl_shorten() {
+        return url_shorten;
+    }
+
+    public void setUrl_shorten(String url_shorten) {
+        this.url_shorten = url_shorten;
+    }
 
     public String getUsername() {
         return username;

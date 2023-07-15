@@ -37,7 +37,7 @@ public class Controller {
     }
 
 }
-@PostMapping("/user/login-check")
+@GetMapping("/user/login-check")//Post mapping changed to get
     public Integer check_login(@RequestBody LoginCheck loginCheck){
     Optional<User> user;
     k=userDao.exists(loginCheck.getUsername());
@@ -85,13 +85,26 @@ public Boolean delete(@RequestBody DeleteData deleteData){
     }
 
 }
-@PostMapping("/user/getoneuser")
-    public User getoneuser(@RequestBody String username){
-    user=userDao.find(username);
-    return user.orElse(null);
+//@GetMapping("/user/getoneuser")
+//    public User getoneuser(@RequestBody String username){
+//    user=userDao.find(username);
+//    return user.orElse(null);
+//}
+
+@GetMapping("/user/get-shortened")
+    public String shorten_url(@RequestBody UrlShorten urlShorten){
+    user= userDao.find(urlShorten.getUsername());
+    user.orElse(null).setUrl_Full(urlShorten.getUrl());
+    user.orElse(null).setUrl_shorten(urlShorten.getUrl_shorten());
+    userDao.save(user.orElse(null));
+    user= userDao.find(urlShorten.getUsername());
+    if(user.orElse(null).getUrl_shorten()!=null && user.orElse(null).getUrl_Full()!=null){
+        return user.orElse(null).getUrl_shorten();
+    }
+    else{
+        return "failed";
+    }
 }
-
-
 
 
 }
