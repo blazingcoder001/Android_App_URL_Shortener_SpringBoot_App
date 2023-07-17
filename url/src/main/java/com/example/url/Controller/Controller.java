@@ -93,18 +93,34 @@ public Boolean delete(@RequestBody DeleteData deleteData){
 
 @GetMapping("/user/get-shortened")
     public String shorten_url(@RequestBody UrlShorten urlShorten){
-    user= userDao.find(urlShorten.getUsername());
-    user.orElse(null).setUrl_Full(urlShorten.getUrl());
-    user.orElse(null).setUrl_shorten(urlShorten.getUrl_shorten());
-    userDao.save(user.orElse(null));
-    user= userDao.find(urlShorten.getUsername());
-    if(user.orElse(null).getUrl_shorten()!=null && user.orElse(null).getUrl_Full()!=null){
-        return user.orElse(null).getUrl_shorten();
+    int c=1;
+    Iterable<User> userIterable=userDao.findall();
+    for( User x: userIterable){
+        if(x.getUrl_shorten().equals(urlShorten.getUrl_shorten())){
+            c=0;
+            break;
+        }
+    }
+    if(c==1) {
+        user = userDao.find(urlShorten.getUsername());
+        user.orElse(null).setUrl_Full(urlShorten.getUrl());
+        user.orElse(null).setUrl_shorten(urlShorten.getUrl_shorten());
+        userDao.save(user.orElse(null));
+        user = userDao.find(urlShorten.getUsername());
+        if (user.orElse(null).getUrl_shorten() != null && user.orElse(null).getUrl_Full() != null) {
+            return user.orElse(null).getUrl_shorten();
+        }
+        else {
+            return "failed0";
+        }
     }
     else{
-        return "failed";
+        return "failed1";
     }
+
+}
+
 }
 
 
-}
+

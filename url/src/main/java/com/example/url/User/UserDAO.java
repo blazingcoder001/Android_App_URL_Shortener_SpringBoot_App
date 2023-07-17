@@ -27,6 +27,9 @@ public class UserDAO {
         user=repository.findById(username);
         return user;
     }
+    public Iterable<User> findall(){
+        return repository.findAll();
+    }
 
 
 }
