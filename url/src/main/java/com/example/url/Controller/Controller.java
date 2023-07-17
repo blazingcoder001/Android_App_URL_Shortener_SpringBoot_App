@@ -9,6 +9,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 
+
 @RestController
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 public class Controller {
@@ -37,7 +38,7 @@ public class Controller {
     }
 
 }
-@GetMapping("/user/login-check")//Post mapping changed to get
+@PostMapping("/user/login-check")//Post mapping changed to get
     public Integer check_login(@RequestBody LoginCheck loginCheck){
     Optional<User> user;
     k=userDao.exists(loginCheck.getUsername());
@@ -91,12 +92,13 @@ public Boolean delete(@RequestBody DeleteData deleteData){
 //    return user.orElse(null);
 //}
 
-@GetMapping("/user/get-shortened")
-    public String shorten_url(@RequestBody UrlShorten urlShorten){
+@PostMapping("/user/get-shortened")
+    public StringPass shorten_url(@RequestBody UrlShorten urlShorten){
     int c=1;
+//    System.out.println("*/*/*/"+urlShorten.getUrl_shorten());
     Iterable<User> userIterable=userDao.findall();
     for( User x: userIterable){
-        if(x.getUrl_shorten().equals(urlShorten.getUrl_shorten())){
+        if(x.getUrl_shorten()!=null && ( x.getUrl_shorten().equals(urlShorten.getUrl_shorten()))){
             c=0;
             break;
         }
@@ -105,18 +107,32 @@ public Boolean delete(@RequestBody DeleteData deleteData){
         user = userDao.find(urlShorten.getUsername());
         user.orElse(null).setUrl_Full(urlShorten.getUrl());
         user.orElse(null).setUrl_shorten(urlShorten.getUrl_shorten());
+        userDao.delete_by_ID(urlShorten.getUsername());
         userDao.save(user.orElse(null));
         user = userDao.find(urlShorten.getUsername());
         if (user.orElse(null).getUrl_shorten() != null && user.orElse(null).getUrl_Full() != null) {
-            return user.orElse(null).getUrl_shorten();
+            System.out.println("*/*/*/"+user.orElse(null).getUrl_shorten());
+             //Change started
+            StringPass pass= new StringPass();
+            pass.setUrl_shorten(user.orElse(null).getUrl_shorten());
+            return pass;
+
+//            String urlShorten = user.orElse(null).getUrl_shorten();
+//            JSONObject json = new JSONObject();
+//            json.put("url_shorten", urlShorten);
+//            String jsonString = json.toString();
+//            return user.orElse(null).getUrl_shorten();
         }
         else {
-            return "failed0";
+            StringPass pass= new StringPass();
+            pass.setUrl_shorten("failed0");
+            return pass;
         }
     }
     else{
-        return "failed1";
-    }
+        StringPass pass= new StringPass();
+        pass.setUrl_shorten("failed1");
+        return pass;    }
 
 }
 
