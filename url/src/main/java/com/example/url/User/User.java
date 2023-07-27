@@ -1,15 +1,19 @@
 package com.example.url.User;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.io.Serializable;
+
+
 
 @Entity
+@IdClass(MyKey.class)
 public class User {
     @Id
     String username;
-    String password,firstname,lastname,url_Full,url_shorten;
+    @Id
+    String url_shorten;
+    String password,firstname,lastname,url_Full;
 
     public String getUrl_shorten() {
         return url_shorten;

@@ -1,7 +1,15 @@
 package com.example.url.User;
 
 public class ChangePassData {
-    private String username, old_password, new_password;
+    private String username, old_password, new_password,url_short;
+
+    public String getUrl_short() {
+        return url_short;
+    }
+
+    public void setUrl_short(String url_short) {
+        this.url_short = url_short;
+    }
 
     public String getUsername() {
         return username;

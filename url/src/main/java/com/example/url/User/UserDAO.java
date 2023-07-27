@@ -15,16 +15,16 @@ public class UserDAO {
     repository.save(user);
     }
 
-    public void delete_by_ID(String username){
-        repository.deleteById(username);
+    public void delete_by_ID(MyKey myKey){
+        repository.deleteById(myKey);
 
     }
-    public boolean exists(String username){
-        k=repository.existsById(username);
+    public boolean exists(MyKey myKey){
+        k=repository.existsById(myKey);
         return k;
     }
-    public Optional<User> find(String username){
-        user=repository.findById(username);
+    public Optional<User> find(MyKey myKey){
+        user=repository.findById(myKey);
         return user;
     }
     public Iterable<User> findall(){
