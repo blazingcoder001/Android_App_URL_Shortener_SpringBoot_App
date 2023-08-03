@@ -135,21 +135,30 @@ public Boolean delete(@RequestBody DeleteData deleteData){
 }
 @PostMapping("/user/change-password")
     public Integer change_password(@RequestBody ChangePassData changePassData){
+    int d=0;
     myKey.setUsername(changePassData.getUsername());
-    myKey.setUrl_short(changePassData.getUrl_short());
+    Iterable<User> userIterable=userDao.findall();
+    for( User x: userIterable){
+        if(x.getUsername()!=null && ( x.getUsername().equals(changePassData.getUsername()))){
+
+            if(x.getPassword().equals(changePassData.getOld_password())){
+                d=1;
+                x.setPassword(changePassData.getNew_password());
+                myKey.setUrl_short(x.getUrl_shorten());
+                myKey.setUsername(x.getUsername());
+                userDao.delete_by_ID(myKey);
+                userDao.save(x);
+            }
+        }
+    }
+    if(d==1)
+        return 1;
+    else
+        return 2;
+
 //    user=userDao.find(changePassData.getUsername());
-    user=userDao.find(myKey);
 //    user1=user.orElseThrow(()->new NoSuchElementException("User not Found!"));
 //    user2=user1;
-    if(user.orElse(null).getPassword().equals(changePassData.getOld_password())){
-        user.orElse(null).setPassword(changePassData.getNew_password());
-        userDao.delete_by_ID(myKey);
-        userDao.save(user.orElse(null));
-        return 1;
-    }
-    else{
-        return 2;
-    }
 
 }
 //@GetMapping("/user/getoneuser")
