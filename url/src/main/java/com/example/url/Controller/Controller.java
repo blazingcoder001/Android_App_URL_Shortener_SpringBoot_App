@@ -18,7 +18,7 @@ import java.util.Optional;
 public class Controller {
 
     MyKey myKey=new MyKey();
-    Boolean k;
+    Boolean k=false;
     Boolean j;
     @Autowired
     private UserDAO userDao;
@@ -201,17 +201,20 @@ public StringPass shorten_url(@RequestBody User user_loc){
             c=0;
             break;
         }
-        if(x.getUsername().equals(user_loc.getUsername()) && x.getUrl_shorten()==null){
+        if(x.getUsername().equals(user_loc.getUsername()) && x.getUrl_shorten().isEmpty()){
             d=0;
         }
     }
     if(c==1) {
-        userDao.save(user_loc);
         if(d==0){
-            myKey.setUrl_short(user_loc.getUrl_shorten());
+            myKey.setUrl_short("");
             myKey.setUsername(user_loc.getUsername());
             userDao.delete_by_ID(myKey);
         }
+        userDao.save(user_loc);
+        myKey.setUrl_short(user_loc.getUrl_shorten());
+
+
 //        myKey.setUrl_short(urlShorten.getUrl_shorten());
 //        myKey.setUsername(urlShorten.getUsername());
 //        user = userDao.find(urlShorten.getUsername());
@@ -222,10 +225,10 @@ public StringPass shorten_url(@RequestBody User user_loc){
 //        user = userDao.find(urlShorten.getUsername());
         user = userDao.find(myKey);
         if (user.orElse(null).getUrl_shorten() != null && user.orElse(null).getUrl_Full() != null) {
-            System.out.println("*/*/*/"+user.orElse(null).getUrl_shorten());
+//            System.out.println("*/*/*/"+user.orElse(null).getUrl_shorten());
             //Change started
             StringPass pass= new StringPass();
-            pass.setUrl_shorten(user.orElse(null).getUrl_shorten());
+            pass.setUrl_shorten("success");
             return pass;
 
 //            String urlShorten = user.orElse(null).getUrl_shorten();
