@@ -114,11 +114,24 @@ public Integer check_login(@RequestBody LoginCheck loginCheck){
 //}
 @PostMapping("/user/delete-user")
 public Boolean delete(@RequestBody DeleteData deleteData){
-    myKey.setUsername(deleteData.getUsername());
-    myKey.setUrl_short(deleteData.getUrl_short());
-    userDao.delete_by_ID(myKey);
+//    myKey.setUsername(deleteData.getUsername());
+//    myKey.setUrl_short(deleteData.getUrl_short());
+//    userDao.delete_by_ID(myKey);
+//    k=userDao.exists(myKey);
+//    return k;
+    Iterable<User> userIterable=userDao.findall();
+    for( User x: userIterable){
+        if(x.getUsername()!=null && ( x.getUsername().equals(deleteData.getUsername()))){
+            k=true;
+            myKey.setUrl_short(x.getUrl_shorten());
+            myKey.setUsername(x.getUsername());
+            userDao.delete_by_ID(myKey);
+        }
+    }
+
     k=userDao.exists(myKey);
     return k;
+
 }
 @PostMapping("/user/change-password")
     public Integer change_password(@RequestBody ChangePassData changePassData){
